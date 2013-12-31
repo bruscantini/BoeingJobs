@@ -1,0 +1,41 @@
+{% extends "jobs/jobs.html" %}
+
+{% block content%}
+
+	<script type="text/javascript">
+
+	$(document).ready(function(){
+
+    $.ajax({
+    type: "GET",
+    url:"/newCompanies",
+    data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+    contentType: "text",
+    dataType : "text",
+    success: function(newCompanies){            
+
+                     
+        $(".container").append(newCompanies);
+
+        }
+    });
+
+
+ });
+
+	</script>
+
+			{% if allCompanies %}
+			<div>
+				<form action="/deleteAll" method="post">{% csrf_token %}
+				<input type= "submit" value= "Delete All" name= "delete" /></form>
+				{% for company in allCompanies %}
+					<div class = "row">
+						<div class = "col-md-3"> {{company.companyName}} </div>
+						<div class = "col-md-2"><a href = /company/{{company.cbPermalink}}/details>Details</a></div>
+					</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+{% endblock %}
+
